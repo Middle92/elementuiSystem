@@ -1,13 +1,14 @@
 const path = require('path')
 
+function assetsPath(_path) {
+  const assetsSubDirectory =
+    process.env.NODE_ENV === 'production' ? 'static' : 'static'
+
+  return path.posix.join(assetsSubDirectory, _path)
+}
 
 function resolve(dir) {
   return path.join(__dirname, dir)
-}
-
-function assetsPath(_path) {
-  const assetsSubDirectory = 'static'
-  return path.posix.join(assetsSubDirectory, _path)
 }
 
 module.exports = {
@@ -25,13 +26,13 @@ module.exports = {
     https: false,
     hotOnly: false,
     proxy: { // 配置跨域
-      '/': {
+      '/api': {
         //要访问的跨域的api的域名
-        target: process.env.NODE_ENV === 'production' ? '' : 'http://192.168.0.59:7300/mock/5bd2b74e2d630d05a5b4287c/pmcat',
+        target: 'http://192.168.0.59:7300/mock/5be13f9a64f22d05a2a309b0/elemiao',
         ws: false,
         changOrigin: true,
         pathRewrite: {
-          '^/': ''
+          '^/api': ''
         }
       }
     }, // 设置代理
@@ -41,46 +42,45 @@ module.exports = {
     //更改webpack的loader配置
     const svgRule = config.module.rule('svg')
     svgRule.uses.clear()
-    svgRule.include.add(resolve('src/icons'))
     svgRule
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
       .options({
         symbolId: 'icon-[name]'
       })
+      .end()
+      
 
-    const imgRule = config.module.rule('img')
+    const imgRule = config.module.rule('images')
     imgRule.uses.clear()
-    imgRule.exclude.add(resolve('src/icons'))
     imgRule
-      .test(/\.(png|jpe?g|gif|svg)(\?.*)?$/)
+      .test(/\.(png|jpe?g|gif)(\?.*)?$/)
       .use('url-loader')
       .loader('url-loader')
       .options({
-        limit: 10000,
+        limit: 8192,
         name: assetsPath('img/[name].[hash:7].[ext]')
       })
+      .end()
 
     const mediaRule = config.module.rule('media')
-    mediaRule.uses.clear()
-    mediaRule
-      .test(/\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/)
+    mediaRule.test(/\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/)
       .use('url-loader')
       .loader('url-loader')
       .options({
-        limit: 10000,
+        limit: 8192,
         name: assetsPath('media/[name].[hash:7].[ext]')
       })
+      .end()
 
     const fontsRule = config.module.rule('fonts')
-    fontsRule.uses.clear()
-    fontsRule
-      .test(/\.(woff2?|eot|ttf|otf)(\?.*)?$/)
+    fontsRule.test(/\.(woff2?|eoyat|ttf|otf)(\?.*)?$/)
       .use('url-loader')
       .loader('url-loader')
       .options({
-        limit: 10000,
+        limit: 8192,
         name: assetsPath('fonts/[name].[hash:7].[ext]')
       })
+      .end()
   },
 }

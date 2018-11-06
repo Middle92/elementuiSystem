@@ -19,9 +19,6 @@ export default {
     }
   },
   methods: {
-    handleCopy (text, event) {
-      clip(text, event)
-    },
     clipboardSuccess () {
       this.$message({
         message: 'Copy successfully',

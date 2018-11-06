@@ -33,22 +33,14 @@ export default {
       this.imagecropperShow = false
       this.imagecropperKey = this.imagecropperKey + 1
       this.image = resData.files.avatar
+      console.log('-------- crop success --------')
+      this.imgDataUrl = resData
     },
     close () {
       this.imagecropperShow = false
     },
     toggleShow () {
       this.show = !this.show
-    },
-    /**
-     * crop success
-     *
-     * [param] imgDataUrl
-     * [param] field
-     */
-    cropSuccess (imgDataUrl, field) {
-      console.log('-------- crop success --------')
-      this.imgDataUrl = imgDataUrl
     },
     /**
      * upload success

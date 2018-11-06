@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-      <h3 class="title">后台管理系统</h3>
+      <h3 class="title">ELEMIAO后台模板</h3>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
