@@ -24,7 +24,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scope>
 .side-bar-scroll {
   height: 100%;
   .el-scrollbar__wrap {
@@ -36,7 +36,3 @@ export default {
   }
 }
 </style>
-
-<style >
-</style>
-

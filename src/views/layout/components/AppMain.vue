@@ -1,10 +1,12 @@
 <template>
   <section class="app-main">
-    <transition name="fade-transform" mode="out-in">
-      <keep-alive :include="cachedViews">
-        <router-view :key="key"></router-view>
-      </keep-alive>
-    </transition>
+    <el-scrollbar style="height:100%">
+      <transition name="fade-transform" mode="out-in">
+        <keep-alive :include="cachedViews">
+          <router-view :key="key"></router-view>
+        </keep-alive>
+      </transition>
+    </el-scrollbar>
   </section>
 </template>
 
@@ -22,7 +24,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .app-main {
   /*84 = navbar + tags-view = 50 +34 */
   position: absolute;
@@ -30,6 +32,13 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  overflow: auto;
+  overflow: hidden;
+}
+</style>
+<style lang="scss">
+.app-main {
+  .el-scrollbar__wrap {
+    overflow: auto;
+  }
 }
 </style>
