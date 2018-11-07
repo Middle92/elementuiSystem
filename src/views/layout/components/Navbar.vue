@@ -58,10 +58,17 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+@import '@/styles/variables.scss';
 .navbar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left:0;
   height: 50px;
   line-height: 50px;
   border-radius: 0px !important;
+  z-index: 1000;  
+  background: $nav-bar-bg;
   .hamburger-container {
     line-height: 58px;
     height: 50px;

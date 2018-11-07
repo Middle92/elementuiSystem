@@ -114,6 +114,12 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import '@/styles/variables.scss';
 .tags-view-container {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  left: 0;
+  z-index: 1001;
+  background: $tags-view-bg;
   .tags-view-wrapper {
     background: #fff;
     height: 34px;
