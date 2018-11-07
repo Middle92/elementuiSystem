@@ -1,5 +1,5 @@
 <template>
-  <el-scrollbar wrapClass="scrollbar-wrapper">
+  <el-scrollbar class="side-bar-scroll" wrapClass="scrollbar-wrapper">
     <el-menu mode="vertical" :show-timeout="200" :default-active="$route.path" :collapse="isCollapse">
       <sidebar-item v-for="route in permission_routers" :key="route.name" :item="route" :base-path="route.path"></sidebar-item>
     </el-menu>
@@ -24,3 +24,19 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.side-bar-scroll {
+  height: 100%;
+  .el-scrollbar__wrap {
+    overflow-x: hidden;
+  }
+  .el-scrollbar__view {
+    height: initial !important;
+    margin-bottom: 15px;
+  }
+}
+</style>
+
+<style >
+</style>
+
