@@ -110,7 +110,7 @@ $light_gray: #eee;
       color: $light_gray;
       height: 47px;
       &:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
+        box-shadow: 0 0 0px 1000px $bg inset !important;
         -webkit-text-fill-color: #fff !important;
       }
     }
@@ -125,14 +125,15 @@ $light_gray: #eee;
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-$bg: #2d3a4b;
+@import '@/styles/variables.scss';
+
 $dark_gray: #889aa4;
 $light_gray: #eee;
 .login-container {
   position: fixed;
   height: 100%;
   width: 100%;
-  background-color: $bg;
+  background-color: $bg-color-dark;
   .login-form {
     position: absolute;
     left: 0;

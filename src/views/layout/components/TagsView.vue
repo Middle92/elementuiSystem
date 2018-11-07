@@ -112,6 +112,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+@import '@/styles/variables.scss';
 .tags-view-container {
   .tags-view-wrapper {
     background: #fff;
@@ -134,9 +135,9 @@ export default {
         margin-left: 15px;
       }
       &.active {
-        background-color: #42b983;
+        background-color: $bg-color-primary;
         color: #fff;
-        border-color: #42b983;
+        border-color: $bg-color-primary;
         &::before {
           content: '';
           background: #fff;
