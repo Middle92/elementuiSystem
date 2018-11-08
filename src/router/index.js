@@ -21,77 +21,77 @@ Vue.use(Router)
     roles: ['admin', 'editor']   角色权限 不设置则无限制
   }
 **/
-export const constantRouterMap = [{ // 固定的路由页面
-  path: '/login',
-  component: () =>
-      import('@/views/login/index'),
-  hidden: true
-},
-{
-  path: '/authredirect',
-  component: () =>
-      import('@/views/login/authredirect'),
-  hidden: true
-},
-{
-  path: '/404',
-  component: () =>
-      import('@/views/errorPage/401'),
-  hidden: true
-},
-
-{
-  path: '/',
-  component: Layout,
-  redirect: '/dashboard',
-  name: 'dashboard',
-  // hidden: true,
-  children: [{
-    path: 'dashboard',
-    name: 'home',
-    component: () =>
-        import('@/views/dashboard/index'),
-    meta: {
-      title: '首页',
-      icon: 'dashboard'
-    }
-  }]
-},
-
-{
-  path: '/error',
-  component: Layout,
-  redirect: 'noredirect',
-  name: 'errorPages',
-  meta: {
-    title: '错误页',
-    icon: '404'
-  },
-  children: [{
-    path: '401',
-    component: () =>
-          import('@/views/errorPage/401'),
-    name: 'page401',
-    meta: {
-      title: '401错误页',
-      noCache: true
-    }
+export const constantRouterMap = [
+  {
+    // 固定的路由页面
+    path: '/login',
+    component: () => import('@/views/login/index'),
+    hidden: true
   },
   {
-    path: '404',
-    component: () =>
-          import('@/views/errorPage/404'),
-    name: 'page404',
+    path: '/authredirect',
+    component: () => import('@/views/login/authredirect'),
+    hidden: true
+  },
+  {
+    path: '/404',
+    component: () => import('@/views/errorPage/401'),
+    hidden: true
+  },
+
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/dashboard',
+    name: 'dashboard',
+    // hidden: true,
+    children: [
+      {
+        path: 'dashboard',
+        name: 'home',
+        component: () => import('@/views/dashboard/index'),
+        meta: {
+          title: '首页',
+          icon: 'dashboard'
+        }
+      }
+    ]
+  },
+
+  {
+    path: '/error',
+    component: Layout,
+    redirect: 'noredirect',
+    name: 'errorPages',
     meta: {
-      title: '404错误页',
-      noCache: true
-    }
+      title: '错误页',
+      icon: '404'
+    },
+    children: [
+      {
+        path: '401',
+        component: () => import('@/views/errorPage/401'),
+        name: 'page401',
+        meta: {
+          title: '401错误页',
+          noCache: true
+        }
+      },
+      {
+        path: '404',
+        component: () => import('@/views/errorPage/404'),
+        name: 'page404',
+        meta: {
+          title: '404错误页',
+          noCache: true
+        }
+      }
+    ]
   }
-  ]
-}
 ]
 
-export const asyncRouterMap = [ // 异步的路由页面，根据权限加载
+export const asyncRouterMap = [
+  // 异步的路由页面，根据权限加载
   {
     path: '/permission',
     component: Layout,
@@ -103,24 +103,25 @@ export const asyncRouterMap = [ // 异步的路由页面，根据权限加载
       icon: 'lock',
       roles: ['admin', 'editor']
     },
-    children: [{
-      path: 'page',
-      component: () =>
-        import('@/views/permission/page'),
-      name: 'pagePermission',
-      meta: {
-        title: '页面权限',
-        roles: ['admin']
+    children: [
+      {
+        path: 'page',
+        component: () => import('@/views/permission/page'),
+        name: 'pagePermission',
+        meta: {
+          title: '页面权限',
+          roles: ['admin']
+        }
+      },
+      {
+        path: 'directive',
+        component: () => import('@/views/permission/directive'),
+        name: 'directivePermission',
+        meta: {
+          title: '权限指令'
+        }
       }
-    }, {
-      path: 'directive',
-      component: () =>
-        import('@/views/permission/directive'),
-      name: 'directivePermission',
-      meta: {
-        title: '权限指令'
-      }
-    }]
+    ]
   },
   {
     path: '/tree',
@@ -131,25 +132,26 @@ export const asyncRouterMap = [ // 异步的路由页面，根据权限加载
       title: '树',
       icon: 'tree'
     },
-    children: [{
-      path: 'tree1',
-      name: 'Tree1',
-      component: () =>
-        import('@/views/tree/index'),
-      meta: {
-        title: '过滤树',
-        icon: 'tree'
+    children: [
+      {
+        path: 'tree1',
+        name: 'Tree1',
+        component: () => import('@/views/tree/index'),
+        meta: {
+          title: '过滤树',
+          icon: 'tree'
+        }
+      },
+      {
+        path: 'tree2',
+        name: 'Tree2',
+        component: () => import('@/views/tree/index'),
+        meta: {
+          title: '过滤树222',
+          icon: 'tree'
+        }
       }
-    }, {
-      path: 'tree2',
-      name: 'Tree2',
-      component: () =>
-        import('@/views/tree/index'),
-      meta: {
-        title: '过滤树222',
-        icon: 'tree'
-      }
-    }]
+    ]
   },
   {
     path: '/table',
@@ -160,23 +162,24 @@ export const asyncRouterMap = [ // 异步的路由页面，根据权限加载
       title: '表格',
       icon: 'table'
     },
-    children: [{
-      path: 'table1',
-      name: 'Table1',
-      component: () =>
-        import('@/views/table/index'),
-      meta: {
-        title: '表格1'
+    children: [
+      {
+        path: 'table1',
+        name: 'Table1',
+        component: () => import('@/views/table/index'),
+        meta: {
+          title: '表格1'
+        }
+      },
+      {
+        path: 'table2',
+        name: 'Table2',
+        component: () => import('@/views/table/index'),
+        meta: {
+          title: '表格2'
+        }
       }
-    }, {
-      path: 'table2',
-      name: 'Table2',
-      component: () =>
-        import('@/views/table/index'),
-      meta: {
-        title: '表格2'
-      }
-    }]
+    ]
   },
 
   {
@@ -189,15 +192,16 @@ export const asyncRouterMap = [ // 异步的路由页面，根据权限加载
       title: '表单',
       icon: 'form'
     },
-    children: [{
-      path: 'form1',
-      name: 'Form1',
-      component: () =>
-        import('@/views/form/index'),
-      meta: {
-        title: '表单1'
+    children: [
+      {
+        path: 'form1',
+        name: 'Form1',
+        component: () => import('@/views/form/index'),
+        meta: {
+          title: '表单1'
+        }
       }
-    }]
+    ]
   },
 
   {
@@ -210,72 +214,69 @@ export const asyncRouterMap = [ // 异步的路由页面，根据权限加载
       title: '多级目录',
       icon: 'nested'
     },
-    children: [{
-      path: 'menu1',
-      component: () =>
-          import('@/views/nested/menu1/index'), // 父级路由
-      name: 'Menu1',
-      meta: {
-        title: '目录1'
-      },
-      children: [{
-        path: 'menu1-1',
-        component: () =>
-              import('@/views/nested/menu1/menu1-1'),
-        name: 'Menu1-1',
-        meta: {
-          title: '目录1-1'
-        }
-      },
+    children: [
       {
-        path: 'menu1-2',
-        component: () =>
-              import('@/views/nested/menu1/menu1-2'),
-        name: 'Menu1-2',
+        path: 'menu1',
+        component: () => import('@/views/nested/menu1/index'), // 父级路由
+        name: 'Menu1',
         meta: {
-          title: '目录1-2'
+          title: '目录1'
         },
-        children: [{
-          path: 'menu1-2-1',
-          component: () =>
+        children: [
+          {
+            path: 'menu1-1',
+            component: () => import('@/views/nested/menu1/menu1-1'),
+            name: 'Menu1-1',
+            meta: {
+              title: '目录1-1'
+            }
+          },
+          {
+            path: 'menu1-2',
+            component: () => import('@/views/nested/menu1/menu1-2'),
+            name: 'Menu1-2',
+            meta: {
+              title: '目录1-2'
+            },
+            children: [
+              {
+                path: 'menu1-2-1',
+                component: () =>
                   import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-          name: 'Menu1-2-1',
-          meta: {
-            title: '目录1-2-1'
-          }
-        },
-        {
-          path: 'menu1-2-2',
-          component: () =>
+                name: 'Menu1-2-1',
+                meta: {
+                  title: '目录1-2-1'
+                }
+              },
+              {
+                path: 'menu1-2-2',
+                component: () =>
                   import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-          name: 'Menu1-2-2',
-          meta: {
-            title: '目录1-2-2'
+                name: 'Menu1-2-2',
+                meta: {
+                  title: '目录1-2-2'
+                }
+              }
+            ]
+          },
+          {
+            path: 'menu1-3',
+            component: () => import('@/views/nested/menu1/menu1-3'),
+            name: 'Menu1-3',
+            meta: {
+              title: '目录1-3'
+            }
           }
-        }
         ]
       },
       {
-        path: 'menu1-3',
-        component: () =>
-              import('@/views/nested/menu1/menu1-3'),
-        name: 'Menu1-3',
+        path: 'menu2',
+        component: () => import('@/views/nested/menu2/index'),
         meta: {
-          title: '目录1-3'
+          title: '目录2'
         }
       }
-      ]
-    },
-    {
-      path: 'menu2',
-      component: () =>
-          import('@/views/nested/menu2/index'),
-      meta: {
-        title: '目录2'
-      }
-    }
     ]
-
   },
   {
     path: '/components',
@@ -287,42 +288,39 @@ export const asyncRouterMap = [ // 异步的路由页面，根据权限加载
       title: '组件',
       icon: 'component'
     },
-    children: [{
-      path: 'tinymce',
-      component: () =>
-          import('@/views/components-demo/tinymce'),
-      name: 'tinymce-demo',
-      meta: {
-        title: 'tinymce富文本'
+    children: [
+      {
+        path: 'tinymce',
+        component: () => import('@/views/components-demo/tinymce'),
+        name: 'tinymce-demo',
+        meta: {
+          title: 'tinymce富文本'
+        }
+      },
+      {
+        path: 'drag-dialog',
+        component: () => import('@/views/components-demo/dragDialog'),
+        name: 'dragDialog-demo',
+        meta: {
+          title: '拖拽对话框'
+        }
+      },
+      {
+        path: 'avatar-upload',
+        component: () => import('@/views/components-demo/avatarUpload'),
+        name: 'avatarUpload-demo',
+        meta: {
+          title: '头像上传'
+        }
+      },
+      {
+        path: 'clipboard',
+        component: () => import('@/views/components-demo/clipboard'),
+        name: 'clipboardDemo',
+        meta: {
+          title: '剪切板'
+        }
       }
-    },
-    {
-      path: 'drag-dialog',
-      component: () =>
-          import('@/views/components-demo/dragDialog'),
-      name: 'dragDialog-demo',
-      meta: {
-        title: '拖拽对话框'
-      }
-    },
-    {
-      path: 'avatar-upload',
-      component: () =>
-          import('@/views/components-demo/avatarUpload'),
-      name: 'avatarUpload-demo',
-      meta: {
-        title: '头像上传'
-      }
-    },
-    {
-      path: 'clipboard',
-      component: () =>
-          import('@/views/components-demo/clipboard'),
-      name: 'clipboardDemo',
-      meta: {
-        title: '剪切板'
-      }
-    }
     ]
   },
 
@@ -336,33 +334,54 @@ export const asyncRouterMap = [ // 异步的路由页面，根据权限加载
       icon: 'excel',
       roles: ['admin']
     },
-    children: [{
-      path: 'export-excel',
-      component: () =>
-          import('@/views/excel/exportExcel'),
-      name: 'exportExcel',
-      meta: {
-        title: '导出Excel'
+    children: [
+      {
+        path: 'export-excel',
+        component: () => import('@/views/excel/exportExcel'),
+        name: 'exportExcel',
+        meta: {
+          title: '导出Excel'
+        }
+      },
+      {
+        path: 'export-selected-excel',
+        component: () => import('@/views/excel/selectExcel'),
+        name: 'selectExcel',
+        meta: {
+          title: '选择并导出Excel'
+        }
+      },
+      {
+        path: 'upload-excel',
+        component: () => import('@/views/excel/uploadExcel'),
+        name: 'uploadExcel',
+        meta: {
+          title: '导入Excel'
+        }
       }
+    ]
+  },
+  {
+    path: '/detail',
+    component: Layout,
+    redirect: 'noredirect',
+    alwaysShow: true,
+    name: 'detail',
+    meta: {
+      title: '详情页示例',
+      icon: 'detail',
+      roles: ['admin']
     },
-    {
-      path: 'export-selected-excel',
-      component: () =>
-          import('@/views/excel/selectExcel'),
-      name: 'selectExcel',
-      meta: {
-        title: '选择并导出Excel'
+    children: [
+      {
+        path: 'addFrom',
+        component: () => import('@/views/detail/addFrom'),
+        name: 'addFrom',
+        meta: {
+          icon: 'detail',
+          title: '新增页'
+        }
       }
-    },
-    {
-      path: 'upload-excel',
-      component: () =>
-          import('@/views/excel/uploadExcel'),
-      name: 'uploadExcel',
-      meta: {
-        title: '导入Excel'
-      }
-    }
     ]
   },
   {

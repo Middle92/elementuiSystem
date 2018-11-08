@@ -102,7 +102,7 @@ export default {
       this.selectedTag = tag
       const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
       this.left = e.clientX - offsetLeft + 15 // 15: margin right
-      this.top = e.clientY
+      this.top = e.offsetY
     },
     closeMenu () {
       this.visible = false

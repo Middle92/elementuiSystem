@@ -1,11 +1,13 @@
 <template>
   <section class="app-main">
     <el-scrollbar style="height:100%">
-      <transition name="fade-transform" mode="out-in">
-        <keep-alive :include="cachedViews">
-          <router-view :key="key"></router-view>
-        </keep-alive>
-      </transition>
+      <div class="scrollbar-equalizer">
+        <transition name="fade-transform" mode="out-in">
+          <keep-alive :include="cachedViews">
+            <router-view :key="key"></router-view>
+          </keep-alive>
+        </transition>
+      </div>
     </el-scrollbar>
   </section>
 </template>
@@ -33,6 +35,9 @@ export default {
   right: 0;
   bottom: 0;
   overflow: hidden;
+  .scrollbar-equalizer {
+    padding: 0 17px 17px 0; // 补偿el-scrollbar的margin
+  }
 }
 </style>
 <style lang="scss">
