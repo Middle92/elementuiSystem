@@ -195,3 +195,9 @@ code {
 .detail-container{
   padding: 40px;
 }
+
+// a wrapper makes the content of <el-form-item> vertically middle
+.form-item-middle{
+  display: inline-block;
+  vertical-align: middle;
+}
