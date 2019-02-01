@@ -129,6 +129,7 @@ code {
 //main-container全局样式
 .app-container {
   padding: 20px;
+  position: relative;
 }
 
 .components-container {
@@ -200,4 +201,44 @@ code {
 .form-item-middle{
   display: inline-block;
   vertical-align: middle;
+}
+
+// 下拉筛选 选择框
+.item-group {
+  display: inline-block;
+  position: relative;
+  margin-right: 10px;
+  margin-bottom: 15px;
+  &:last-child {
+    margin-right: 0;
+  }
+  label {
+    position: absolute;
+    top: 0;
+    left: 19px;
+    display: inline-block;
+    line-height: 40px;
+    font-size: 14px;
+    font-weight: normal;
+    color: #999999;
+  }
+  &.active {
+    label {
+      display: inline;
+      line-height: normal;
+      top: -13px;
+      left: 19px !important;
+      background-color: #ffffff;
+      transition: all .3s;
+      z-index: 1;
+    }
+  }
+  &.icon {
+    label {
+      left: 30px;
+    }
+  }
+  .el-input__inner {
+    background-color: transparent;
+  }
 }

@@ -9,8 +9,10 @@ import '@/styles/index.scss' // global css
 
 import '@/icons' // icon
 import '@/permission'
+import '@/onresize'
 
 Vue.config.productionTip = false // 权限控制
+
 new Vue({
   router,
   store,
