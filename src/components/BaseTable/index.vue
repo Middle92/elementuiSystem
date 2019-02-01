@@ -3,25 +3,27 @@
     <!-- 下拉筛选 -->
     <div :class="['mask', {'visible': visible && isBotton}]">
       <div
-        :class="['drop-down-filter', {'visible': visible}]"
+        :class="['drop-down-filter', {'visible': visible}, {'column': filterType === 'block'}]"
         :style="{height: filterHeight + 'px'}"
         ref="filter">
         <div class="drop-down-filter-left">
           <slot name="filter-left"></slot>
         </div>
-        <div class="drop-down-filter-center" ref="center">
-          <slot name="filter-center" :data="filterData"></slot>
-        </div>
-        <div class="drop-down-filter-right">
-          <el-button type="primary" @click="search()">搜索</el-button>
-          <el-button type="primary" @click="handlerToggle" v-show="isBotton">
-            <svg-icon iconClass="down" :class="['icon', {'visible': visible}]"></svg-icon>
-          </el-button>
+        <div class="filter-group">
+          <div class="drop-down-filter-center" ref="center">
+            <slot name="filter-center" :data="filterData"></slot>
+          </div>
+          <div class="drop-down-filter-right">
+            <el-button type="primary" @click="search()">搜索</el-button>
+            <el-button type="primary" @click="handlerToggle" v-show="isBotton">
+              <svg-icon iconClass="down" :class="['icon', {'visible': visible}]"></svg-icon>
+            </el-button>
+          </div>
         </div>
       </div>
     </div>
-    <!-- 表格 -->
-    <div :class="['base-table', {'visible': visible && isBotton}]">
+    <!-- 表格 , {'visible': visible && isBotton} -->
+    <div :class="['base-table']" :style="{marginTop: visible && isBotton ? filterHeight + 'px' : 'auto'}">
       <el-table
         :data="tableData"
         :style="{'height': tableHeight}"
@@ -43,7 +45,7 @@
         :total="total">
       </el-pagination>
 
-      <div :class="['tree', {'visible': isTree}]">
+      <div v-if="tree" :class="['tree', {'visible': isTree}]">
         <div class="tree-demo">
           <el-input
             placeholder="输入关键字进行过滤"
@@ -51,12 +53,15 @@
           </el-input>
 
           <el-tree
+            :show-checkbox="treeCheck"
+            highlight-current
             class="filter-tree"
             :data="treeDate"
             :props="defaultProps"
             default-expand-all
             :filter-node-method="filterNode"
-            ref="tree2">
+            @node-click="nodeClick"
+            ref="tree">
           </el-tree>
         </div>
       </div>
@@ -94,69 +99,65 @@ export default {
       type: Number,
       default: 400
     },
-    // 表格数据
-    // tableData: {
-    //   type: Array,
-    //   default () {
-    //     return []
-    //   }
-    // },
+    // 筛选的数据
     filterData: {
       type: Array,
       default () {
         return []
       }
+    },
+    // tree 的数据
+    treeDate: {
+      type: Array,
+      default () {
+        return [{
+          id: 1,
+          label: '一级 1'
+        }, {
+          id: 2,
+          label: '一级 2'
+        }, {
+          id: 3,
+          label: '一级 3'
+        }]
+      }
+    },
+    // defaultProps tree默认的数据类型
+    defaultProps: {
+      type: Object,
+      default () {
+        return {
+          children: 'children',
+          label: 'label'
+        }
+      }
+    },
+    // 是否有tree
+    tree: {
+      type: Boolean,
+      default: false
+    },
+    // treecheck tree是否有checked
+    treeCheck: {
+      type: Boolean,
+      default: false
+    },
+    // filter 的类型 inline / block
+    filterType: {
+      trpe: String,
+      default: 'inline'
     }
   },
   data () {
     return {
       tableHeight: 0,
-      filterHeight: 62,
+      filterHeight: this.filterType === 'block' ? 96 : 46,
       visible: false,
       isBotton: false,
       tableData: [],
       propPageSize: this.pageSize,
       propCurrentPage: this.currentPage,
       filterText: null,
-      treeDate: [{
-        id: 1,
-        label: '一级 1',
-        children: [{
-          id: 4,
-          label: '二级 1-1',
-          children: [{
-            id: 9,
-            label: '三级 1-1-1'
-          }, {
-            id: 10,
-            label: '三级 1-1-2'
-          }]
-        }]
-      }, {
-        id: 2,
-        label: '一级 2',
-        children: [{
-          id: 5,
-          label: '二级 2-1'
-        }, {
-          id: 6,
-          label: '二级 2-2'
-        }]
-      }, {
-        id: 3,
-        label: '一级 3',
-        children: [{
-          id: 7,
-          label: '二级 3-1'
-        }, {
-          id: 8,
-          label: '二级 3-2'
-        }]
-      }],
-      defaultProps: {
-        children: 'children',
-        label: 'label'
-      },
       isTree: false
     }
   },
@@ -164,7 +165,7 @@ export default {
     // 计算table的高度
     countTableHeight () {
       // 筛选框的高度
-      let filter = 61
+      let filter = this.filterHeight
       // 页码高度
       let pagination = this.$refs.pagination.$el.clientHeight
       // 总的高度
@@ -173,13 +174,27 @@ export default {
       this.tableHeight = totalHeight - (filter + pagination) + 'px'
     },
     // 搜索的公共方法
-    searchInit () {
+    searchInit (tree = false) {
       let dataObj = {}
-      this.filterData.forEach(item => {
-        dataObj[item.key] = item.value
-      })
+      // 是否展示树
+      // 不展示 或者 树是可多选状态
+      if (!tree || this.treeCheck) {
+        this.filterData.forEach(item => {
+          dataObj[item.key] = item.value
+        })
+        // 多选状态，添加treeNode
+        if (this.treeCheck) {
+          dataObj.treeNode = this.$refs.tree.getCheckedNodes().map(item => item.id).join(',')
+          this.isTree = false
+        }
+      // 展示
+      } else {
+        dataObj.treeNode = tree.data.id
+        this.isTree = false
+      }
+      this.visible = false
       window.vm.$emit('search', {
-        url: 'url',
+        url: '',
         data: Object.assign(dataObj, { pageSize: this.propPageSize, currentPage: this.propCurrentPage }),
         callback: (result) => {
           this.tableData = result.rows
@@ -188,13 +203,11 @@ export default {
     },
     // 改变pageSizes触发事件
     handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
       this.propPageSize = val
       this.searchInit()
     },
     // 改变currentPage触发事件
     handleCurrentChange (val) {
-      console.log(`当前页: ${val}`)
       this.propCurrentPage = val
       this.searchInit()
     },
@@ -221,6 +234,12 @@ export default {
     filterNode (value, data) {
       if (!value) return true
       return data.label.indexOf(value) !== -1
+    },
+    nodeClick (object, node, body) {
+      if (this.treeCheck) {
+        return
+      }
+      this.searchInit(node)
     }
   },
   mounted () {
@@ -235,7 +254,7 @@ export default {
   watch: {
     // 监听搜索tree的input值
     filterText (val) {
-      this.$refs.tree2.filter(val)
+      this.$refs.tree.filter(val)
     },
     // 监听visible 解决切换tree冲突
     visible (val) {
@@ -281,8 +300,8 @@ export default {
 
 .drop-down-filter {
   border-bottom: 1px solid #dddddd;
-  padding: 10px;
-  padding-bottom: 0px;
+  padding: 0px;
+  // padding-bottom: 0px;
   display: flex;
   overflow: hidden;
   transition: all .3s;
@@ -291,19 +310,30 @@ export default {
   &.visible {
     height: auto !important;
   }
+  &.column {
+    flex-direction: column;
+    .drop-down-filter-left {
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+  }
   .drop-down-filter-left {
     white-space: nowrap;
     margin-right: 10px;
   }
-  .drop-down-filter-center {
+  .filter-group {
+    display: flex;
     flex: 1;
-  }
-  .drop-down-filter-right {
-    white-space: nowrap;
-    .icon {
-      transition: all .3s;
-      &.visible {
-        transform: rotate(180deg);
+    .drop-down-filter-center {
+      flex: 1;
+    }
+    .drop-down-filter-right {
+      white-space: nowrap;
+      .icon {
+        transition: all .3s;
+        &.visible {
+          transform: rotate(180deg);
+        }
       }
     }
   }

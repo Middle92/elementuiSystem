@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-button @click="toggleTree">tree</el-button>
-    <!-- <el-button type="primary">主要按钮</el-button> -->
+    <el-button type="primary">主要按钮</el-button>
   </div>
 </template>
 
@@ -11,7 +11,7 @@ export default {
     return {}
   },
   methods: {
-    toggleTree() {
+    toggleTree () {
       window.vm.$emit('toggleTree')
     }
   }
