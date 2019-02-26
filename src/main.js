@@ -9,7 +9,7 @@ import '@/styles/index.scss' // global css
 
 import '@/icons' // icon
 import '@/permission'
-import '@/onresize'
+import '@/commonEvent'
 
 Vue.config.productionTip = false // 权限控制
 

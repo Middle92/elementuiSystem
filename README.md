@@ -33,6 +33,7 @@ yarn run lint
   /testPower 测试权限
     /test 测试
 /components 公共组件
-  /DropDownFilter 下拉筛选
+  /FilterItem 下拉筛选
   /BaseTable 表格
-/onresize.js 浏览器变化事件
+/commonEvent.js 定义公共事件
+  1.window.vm.$emit('search') 调用搜索方法

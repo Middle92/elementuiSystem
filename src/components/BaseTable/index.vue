@@ -155,16 +155,16 @@ export default {
   },
   data () {
     return {
-      tableHeight: 0,
-      filterHeight: this.filterType === 'block' ? 120 : 60,
-      visible: false,
-      isBotton: false,
-      tableData: [],
-      propPageSize: this.pageSize,
-      propCurrentPage: this.currentPage,
-      propTotal: this.total,
-      filterText: null,
-      isTree: false
+      tableHeight: 0, // 表格的高度
+      filterHeight: this.filterType === 'block' ? 120 : 60, // 筛选框的高度
+      visible: false, // 是否展开筛选框 true->展开 / false->收起
+      isBotton: false, // 是否显示展开筛选框的下拉按钮
+      tableData: [], // 表格数据
+      propPageSize: this.pageSize, // 显示几条数据
+      propCurrentPage: this.currentPage, // 第几页
+      propTotal: this.total, // 总页
+      filterText: null, // 树的搜索框文字
+      isTree: false // 是否有树
     }
   },
   methods: {
@@ -199,6 +199,7 @@ export default {
         this.isTree = false
       }
       this.visible = false
+      // 调用公共事件搜索方法
       window.vm.$emit('search', {
         url: this.url,
         data: Object.assign(dataObj, { pageSize: this.propPageSize, currentPage: this.propCurrentPage }),
@@ -242,6 +243,7 @@ export default {
       if (!value) return true
       return data.label.indexOf(value) !== -1
     },
+    // 树节点点击事件
     nodeClick (object, node, body) {
       if (this.treeCheck) {
         return

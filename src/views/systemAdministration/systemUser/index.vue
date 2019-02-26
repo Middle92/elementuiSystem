@@ -23,7 +23,9 @@
             :value="item.value"
             :options="item.options"
             @propValue="propValue"
-          ></filter-item>
+          >
+          <!-- 监听propValue变化，然后把值替换旧的值，实现数据的传递 -->
+          </filter-item>
         </div>
       </template>
 

@@ -57,19 +57,23 @@
 <script>
 export default {
   props: {
+    // 标题
     title: {
       require: true,
       type: String,
       default: ''
     },
+    // 默认值
     value: {
       default: null
     },
+    // select(下拉选择框)/date(事件选择框)/multipleSelect(多选下拉选择框)/datetimerange(时间联动框)/input(输入框)
     type: {
       require: true,
       type: String,
       default: null
     },
+    // 下拉的选项配置
     options: {
       type: Array,
       default () {
@@ -97,6 +101,7 @@ export default {
         ]
       }
     },
+    // 日期选择框配置
     pickerOptions: {
       type: Object,
       default () {
@@ -154,20 +159,26 @@ export default {
         }
       }
     },
+    // 组件下标
     index: {
       default: null
     }
   },
   data () {
     return {
+      // 选择/输入的值
       propValue: this.value
     }
   },
   watch: {
+    // 监听value变化
     value (val) {
+      // 把赋值给propValue
       this.propValue = val
     },
+    // 监听propValue变化
     propValue (val) {
+      // 把值回传给组件
       this.$emit('propValue', val, this.index)
     }
   }
