@@ -29,8 +29,8 @@ module.exports = {
       '/api': {
         //要访问的跨域的api的域名
         // target: 'http://192.168.0.59:7300/mock/5be13f9a64f22d05a2a309b0/elemiao',
-        // target: ' https://www.easy-mock.com/mock/5bf5060423cd543fde878b47/elemiao',
-        target: 'https://www.easy-mock.com/mock/5c459878411a4b65ca1f58b4/elemiao',
+        target: ' https://www.easy-mock.com/mock/5bf5060423cd543fde878b47/elemiao',
+        // target: 'https://www.easy-mock.com/mock/5c459878411a4b65ca1f58b4/elemiao',
         ws: false,
         changOrigin: true,
         pathRewrite: {

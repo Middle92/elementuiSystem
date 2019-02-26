@@ -6,7 +6,7 @@ export function loginByUsername (username, password) {
     password
   }
   return request({
-    url: '/user/login',
+    url: 'http://192.168.0.98:3000/login',
     method: 'post',
     data
   })
@@ -14,15 +14,15 @@ export function loginByUsername (username, password) {
 
 export function logout () {
   return request({
-    url: '/user/logout',
+    url: 'http://192.168.0.98:3000/logout',
     method: 'post'
   })
 }
 
-export function getUserInfo (token) {
+export function getUserInfo (token, username) {
   return request({
-    url: '/user/info',
+    url: 'http://192.168.0.98:3000/getUserInfo',
     method: 'get',
-    params: { token }
+    params: { token, username }
   })
 }

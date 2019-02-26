@@ -3,22 +3,20 @@
     <!-- 下拉筛选 -->
     <div :class="['mask', {'visible': visible && isBotton}]">
       <div
-        :class="['drop-down-filter', {'visible': visible}, {'column': filterType === 'block'}]"
+        :class="['drop-down-filter', {'visible': visible && isBotton}, {'column': filterType === 'block'}]"
         :style="{height: filterHeight + 'px'}"
         ref="filter">
         <div class="drop-down-filter-left">
           <slot name="filter-left"></slot>
         </div>
-        <div class="filter-group">
-          <div class="drop-down-filter-center" ref="center">
-            <slot name="filter-center" :data="filterData"></slot>
-          </div>
-          <div class="drop-down-filter-right">
-            <el-button type="primary" @click="search()">搜索</el-button>
-            <el-button type="primary" @click="handlerToggle" v-show="isBotton">
-              <svg-icon iconClass="down" :class="['icon', {'visible': visible}]"></svg-icon>
-            </el-button>
-          </div>
+        <div class="drop-down-filter-center" ref="center" style="flex: 1">
+          <slot name="filter-center" :data="filterData"></slot>
+        </div>
+        <div class="drop-down-filter-right">
+          <el-button type="primary" ref="search" @click="search()">搜索</el-button>
+          <el-button type="primary" @click="handlerToggle" v-show="isBotton">
+            <svg-icon iconClass="down" :class="['icon', {'visible': visible}]"></svg-icon>
+          </el-button>
         </div>
       </div>
     </div>
@@ -27,6 +25,7 @@
       <el-table
         :data="tableData"
         :style="{'height': tableHeight}"
+        :height="tableHeight"
         tooltip-effect="dark"
         border
         style="width: 100%"
@@ -42,7 +41,7 @@
         :page-sizes="pageSizes"
         :page-size="propPageSize"
         :layout="layout"
-        :total="total">
+        :total="propTotal">
       </el-pagination>
 
       <div v-if="tree" :class="['tree', {'visible': isTree}]">
@@ -97,7 +96,7 @@ export default {
     // 总页
     total: {
       type: Number,
-      default: 400
+      default: 0
     },
     // 筛选的数据
     filterData: {
@@ -144,19 +143,26 @@ export default {
     },
     // filter 的类型 inline / block
     filterType: {
-      trpe: String,
+      type: String,
       default: 'inline'
+    },
+    // 请求地址
+    url: {
+      require: true,
+      type: String,
+      default: ''
     }
   },
   data () {
     return {
       tableHeight: 0,
-      filterHeight: this.filterType === 'block' ? 96 : 46,
+      filterHeight: this.filterType === 'block' ? 120 : 60,
       visible: false,
       isBotton: false,
       tableData: [],
       propPageSize: this.pageSize,
       propCurrentPage: this.currentPage,
+      propTotal: this.total,
       filterText: null,
       isTree: false
     }
@@ -194,10 +200,11 @@ export default {
       }
       this.visible = false
       window.vm.$emit('search', {
-        url: '',
+        url: this.url,
         data: Object.assign(dataObj, { pageSize: this.propPageSize, currentPage: this.propCurrentPage }),
         callback: (result) => {
-          this.tableData = result.rows
+          this.propTotal = result.total
+          this.tableData = result.data
         }
       })
     },
@@ -245,8 +252,10 @@ export default {
   mounted () {
     this.$nextTick(this.countTableHeight)
     this.$nextTick(this.isBottonFun)
-    window.vm.$on('countTableHeight', this.countTableHeight)
-    window.vm.$on('isBottonFun', this.isBottonFun)
+    window.onresize = () => {
+      this.countTableHeight()
+      this.isBottonFun()
+    }
     window.vm.$on('toggleTree', () => {
       this.isTree = !this.isTree
     })
@@ -274,8 +283,8 @@ export default {
 
 <style lang="scss" scoped>
 .base-table {
-  // padding-top: 61px;
   position: relative;
+  z-index: 9;
   &.visible {
     margin-top: 62px;
   }
@@ -287,11 +296,12 @@ export default {
 
 .mask {
   transition: all .5s;
+  z-index: -1;
   &.visible {
     background: rgba(0,0,0, .5);
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 17px;
+    left: 17px;
     right: 0;
     bottom: 0;
     z-index: 99;
@@ -301,27 +311,48 @@ export default {
 .drop-down-filter {
   border-bottom: 1px solid #dddddd;
   padding: 0px;
-  // padding-bottom: 0px;
   display: flex;
-  overflow: hidden;
   transition: all .3s;
   background: #ffffff;
   transition: all .3s;
   &.visible {
     height: auto !important;
+    .drop-down-filter-center {
+      .item-group {
+        margin-bottom: 20px;
+      }
+    }
   }
   &.column {
-    flex-direction: column;
+    // flex-direction: column;
+    flex-wrap: wrap;
     .drop-down-filter-left {
+      width: 100%;
       margin-right: 0;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
   }
   .drop-down-filter-left {
     white-space: nowrap;
     margin-right: 10px;
   }
+  .drop-down-filter-center {
+    flex: 1;
+    .item-group {
+      margin-bottom: 40px;
+    }
+  }
+  .drop-down-filter-right {
+    white-space: nowrap;
+    .icon {
+      transition: all .3s;
+      &.visible {
+        transform: rotate(180deg);
+      }
+    }
+  }
   .filter-group {
+    line-height: inherit;
     display: flex;
     flex: 1;
     .drop-down-filter-center {

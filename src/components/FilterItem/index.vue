@@ -49,6 +49,8 @@
       end-placeholder="结束日期"
       align="right">
     </el-date-picker>
+    <!-- input -->
+    <el-input v-model="propValue" v-if="type === 'input'"></el-input>
   </div>
 </template>
 
